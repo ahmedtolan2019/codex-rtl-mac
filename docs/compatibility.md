@@ -15,7 +15,9 @@ The core renderer was manually confirmed by a user on the macOS desktop app vers
 
 The public package adds app discovery and a bundled universal runtime. Automated tests cover app discovery, normal quit/reopen decisions, blocked quits, occupied ports, loopback restrictions and mock protocol transport. Browser tests cover fictional content, nested link labels, explicit column alignment, spacing, preservation of logical text, streaming and replacement with identical text.
 
-The package is built and its own signature and runtime are checked on Apple silicon. Full launch and visual verification of the newly packaged app across other Macs, especially Intel, still needs community testing. A browser fixture is not evidence that a signed-in desktop session was inspected. The publisher does not claim a full device matrix or an independent security audit.
+The tagged-release workflow builds on Apple silicon and verifies the extracted packages, signatures and runtime execution on both Apple silicon and Intel runners. Full launch and visual verification of the newly packaged app across other Macs still needs community testing. A browser fixture is not evidence that a signed-in desktop session was inspected. The publisher does not claim a full device matrix or an independent security audit.
+
+The release additionally prevents short number-and-memory-unit pairs such as `12 GB` from wrapping across lines. That adjustment is covered by the synthetic narrow-window browser regression, rather than a new signed-in desktop capture.
 
 ## Known limits
 

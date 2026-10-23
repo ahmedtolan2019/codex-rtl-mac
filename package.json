@@ -8,10 +8,11 @@
   "repository": {"type":"git","url":"https://github.com/ahmedtolan2019/codex-rtl-mac.git"},
   "engines": {"node": ">=22"},
   "scripts": {
-    "test": "node --test desktop/*.test.mjs",
-    "check": "node --check src/injected.js && node --check desktop/macos-composer.js && node --check desktop/macos.mjs && node --check scripts/build-macos.mjs",
+    "test": "node --test desktop/*.test.mjs scripts/*.test.mjs",
+    "check": "node --check src/injected.js && node --check desktop/macos-composer.js && node --check desktop/macos.mjs && node --check scripts/build-macos.mjs && node --check scripts/verify-release.mjs && node --check scripts/release-metadata.mjs",
     "test:browser": "playwright test",
     "build:mac": "node scripts/build-macos.mjs",
+    "verify:release": "node scripts/verify-release.mjs",
     "start": "node desktop/macos.mjs",
     "doctor": "node desktop/macos.mjs --check"
   },

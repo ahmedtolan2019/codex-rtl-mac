@@ -47,7 +47,7 @@ Do not broaden selectors to every `div` or infer code from the substring `code`.
 
 ## Releases
 
-Update the version in `package.json` and the lockfile, run checks, build on macOS and review the source diff. Publish the ZIP and checksum with release notes that state compatibility and signing limits. Runtime updates also require updating the official source and both hashes in `scripts/node-runtime.json` after verification.
+Follow the [tagged-release guide](docs/releases.md). Update the version and lockfile, add versioned release notes and push an annotated tag after tests pass. GitHub Actions builds both editions, verifies extracted packages on Apple silicon and Intel, then publishes the ZIPs and checksums. Runtime updates also require updating the official source and both hashes in `scripts/node-runtime.json` after verification.
 
 If Developer ID signing is added later, document the certificate identity and notarization process. Do not claim notarization for ad-hoc builds.
 

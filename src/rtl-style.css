@@ -20,6 +20,9 @@
   text-align: start !important;
   unicode-bidi: isolate !important;
 }
+[data-codex-rtl-root="true"] bdi[data-codex-unit-run="true"] {
+  white-space: nowrap !important;
+}
 /* Keep native wrapping and scrolling. Table cells get consistent gutters. */
 [data-codex-rtl-root="true"] table[data-codex-table-direction="rtl"] { direction: rtl !important; }
 [data-codex-rtl-root="true"] table[data-codex-table-direction="ltr"] { direction: ltr !important; }

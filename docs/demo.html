@@ -60,6 +60,8 @@ function checks(){
  check('Nested native-style link labels inherit cell direction',[...document.querySelectorAll('#native-link-0 .label,#native-link-1 .label')].every(el=>getComputedStyle(el).direction==='rtl')),
  check('12 GB remains a complete LTR phrase',[...$('native-link-0').querySelectorAll('bdi')].some(el=>el.textContent==='12 GB'&&getComputedStyle(el).direction==='ltr')),
  check('8 GB remains a complete LTR phrase',[...$('native-link-1').querySelectorAll('bdi')].some(el=>el.textContent==='8 GB')),
+ check('12 GB fits on one line at narrow widths',[...$('native-link-0').querySelectorAll('bdi')].some(el=>el.textContent==='12 GB'&&el.getClientRects().length===1)),
+ check('8 GB fits on one line at narrow widths',[...$('native-link-1').querySelectorAll('bdi')].some(el=>el.textContent==='8 GB'&&el.getClientRects().length===1)),
  check('Brand then Arabic then unit follows RTL reading order',['native-link-0','native-link-1'].every(id=>{const runs=$(id).querySelectorAll('bdi');if(runs.length!==2)return false;const brand=runs[0].getBoundingClientRect(),unit=runs[1].getBoundingClientRect();return brand.bottom<=unit.top||brand.left>unit.right;})),
  check('Link destinations and nested wrappers survive',$('native-link-0').getAttribute('href')==='https://example.com/atlas'&&!!$('native-link-0').querySelector(':scope > .mention > .label')),
  check('Comma-separated price is one number',[...$('arabic-table').querySelectorAll('bdi')].some(el=>el.textContent==='1,250')),

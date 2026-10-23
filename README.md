@@ -76,6 +76,7 @@ Official app updates can follow their normal process because its installed files
 - [Fonts, spacing, language detection and app location](docs/customization.md)
 - [How the renderer and launcher work](docs/architecture.md)
 - [Build, test and contribute](CONTRIBUTING.md)
+- [Publish and recover tagged releases](docs/releases.md)
 - [Compatibility and known limits](docs/compatibility.md)
 - [Safe demo prompt and screenshot guide](docs/demo-prompt.md)
 

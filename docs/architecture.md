@@ -35,6 +35,8 @@ Formatting spans inside a directed paragraph or cell inherit its direction. Trea
 
 Latin phrases are isolated with `bdi dir="ltr"`. Logical text is preserved; the script does not add Unicode bidi control characters to the message. A complete phrase such as `12 GB` is kept in one isolate when it is in one text node.
 
+Short number-and-memory-unit pairs also receive `white-space: nowrap`. Isolation alone preserves direction but still allows a line break between the number and unit. Longer English phrases retain normal wrapping.
+
 The isolation cache compares rendered markup. Text equality alone is insufficient because the app can replace an element with identical text and remove its wrappers. MutationObserver and animation-frame batching handle new or rebuilt content.
 
 ## Editable text

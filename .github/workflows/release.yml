@@ -1,0 +1,120 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  metadata:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Validate the tag and source commit
+        env:
+          RELEASE_REF: ${{ github.ref }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          [[ "$RELEASE_REF" == refs/tags/* ]] || { echo 'Run releases from a version tag.'; exit 1; }
+          node scripts/release-metadata.mjs "$RELEASE_TAG"
+          git merge-base --is-ancestor HEAD origin/main
+
+  test:
+    needs: metadata
+    uses: ./.github/workflows/test.yml
+
+  build:
+    needs: test
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build:mac
+      - run: npm run verify:release
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: mac-release
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            dist/*.zip
+            dist/SHA256SUMS.txt
+
+  verify:
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [macos-15, macos-15-intel]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: mac-release
+          path: dist
+      - run: npm run verify:release
+
+  publish:
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: mac-release
+          path: dist
+      - name: Publish verified archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum --check SHA256SUMS.txt)
+          if gh release view "$RELEASE_TAG" --json isDraft,targetCommitish > release-state.json; then
+            existing_sha=$(jq -r .targetCommitish release-state.json)
+            [[ "$existing_sha" == "$RELEASE_SHA" ]] || { echo 'Existing release belongs to another source commit.'; exit 1; }
+            if [[ $(jq -r .isDraft release-state.json) == false ]]; then
+              echo "$RELEASE_TAG is already published. Its assets were left unchanged."
+              exit 0
+            fi
+          else
+            gh release create "$RELEASE_TAG" --draft --verify-tag --target "$RELEASE_SHA" \
+              --title "Codex RTL for Mac $RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md"
+          fi
+          gh release upload "$RELEASE_TAG" dist/*.zip dist/SHA256SUMS.txt --clobber
+          gh release edit "$RELEASE_TAG" --notes-file "docs/releases/$RELEASE_TAG.md" --draft=false --latest

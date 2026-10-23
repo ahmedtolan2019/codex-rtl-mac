@@ -209,6 +209,11 @@
         const bdi = document.createElement("bdi");
         bdi.dir = "ltr";
         bdi.dataset.codexLtrRun = "true";
+        // A bidi isolate can still wrap between its number and unit. Keep short
+        // memory quantities intact without disabling wrapping for English prose.
+        if (/^[+-]?\d[\d.,]*[ \t]+[KMGTPE]?i?B$/i.test(latinText)) {
+          bdi.dataset.codexUnitRun = "true";
+        }
         bdi.textContent = latinText;
         fragment.append(bdi);
         fragment.append(trailingPunctuation);
