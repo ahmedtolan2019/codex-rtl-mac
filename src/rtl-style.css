@@ -1,0 +1,53 @@
+/* Every rule targets an explicit toolkit marker or a semantic code element.
+   In particular, never match [class*="code"]: that matches Codex prose/UI. */
+[data-codex-rtl-root="true"] [data-codex-direction="rtl"] {
+  direction: rtl !important;
+  text-align: start !important;
+  unicode-bidi: isolate !important;
+}
+[data-codex-rtl-root="true"] [data-codex-direction="ltr"] {
+  direction: ltr !important;
+  text-align: start !important;
+  unicode-bidi: isolate !important;
+}
+[data-codex-rtl-root="true"] [data-codex-ltr-run="true"],
+[data-codex-rtl-root="true"] :is(code,kbd,samp,[data-markdown-copy="inline-code"],[data-code-block-source]) {
+  direction: ltr !important;
+  unicode-bidi: isolate !important;
+}
+[data-codex-rtl-root="true"] pre {
+  direction: ltr !important;
+  text-align: start !important;
+  unicode-bidi: isolate !important;
+}
+/* Keep native wrapping and scrolling. Table cells get consistent gutters. */
+[data-codex-rtl-root="true"] table[data-codex-table-direction="rtl"] { direction: rtl !important; }
+[data-codex-rtl-root="true"] table[data-codex-table-direction="ltr"] { direction: ltr !important; }
+[data-codex-rtl-root="true"] table[data-codex-table-direction] :is(th,td) {
+  text-align: var(--codex-table-cell-align, start) !important;
+  padding-inline: 16px !important;
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+  unicode-bidi: isolate !important;
+}
+[data-codex-rtl-root="true"] code [data-codex-prose-direction="rtl"],
+[data-codex-rtl-root="true"] .cm-content[data-language="markdown"] > .cm-line[data-codex-markdown-editor-direction="rtl"] {
+  direction: rtl !important;
+  text-align: start !important;
+  unicode-bidi: isolate !important;
+}
+[data-codex-rtl-root="true"] code [data-codex-prose-direction="ltr"],
+[data-codex-rtl-root="true"] .cm-content[data-language="markdown"] > .cm-line[data-codex-markdown-editor-direction="ltr"] {
+  direction: ltr !important;
+  text-align: start !important;
+  unicode-bidi: isolate !important;
+}
+
+/* The physical alignment is intentional: it must not flip when a cell's
+   text is LTR inside an RTL column. Header and rows use the same value. */
+[data-codex-cell-align="right"] { --codex-table-cell-align: right; }
+[data-codex-cell-align="left"] { --codex-table-cell-align: left; }
+[data-codex-cell-align="center"] { --codex-table-cell-align: center; }
+[data-codex-rtl-root="true"] :is(th,td)[data-codex-cell-align] :is(p,div,span)[data-codex-direction] {
+  text-align: var(--codex-table-cell-align) !important;
+}

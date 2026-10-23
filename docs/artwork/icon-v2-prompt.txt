@@ -1,0 +1,8 @@
+Use case: logo-brand.
+Asset type: production macOS launcher app icon for an independent open-source utility called Codex RTL for Mac.
+Primary request: create a sophisticated, memorable logo about Arabic-English bidirectional reading. One single icon, not a presentation sheet.
+Composition: centered front-facing macOS rounded-square tile with generous transparent margins, balanced silhouette, clear at 32 pixels.
+Design: a bespoke geometric monogram inspired by the flowing bowl and upper hook of the Arabic letter ع. Its two broad, precisely shaped interlocking strokes also suggest opposing reading directions: a crisp ivory upper path flowing leftward and a luminous cobalt-blue lower path flowing rightward. The negative space should be intentional, open and beautifully balanced. No literal arrows, no tiny glyphs, no extra letters. Keep the symbol simple enough to redraw as a vector.
+Style: premium contemporary typography studio identity, restrained Swiss precision with Arabic calligraphic rhythm. Flat satin midnight navy tile, very subtle edge bevel, clean matte ivory and cobalt mark, exceptionally crisp edges. Modest dimensionality only.
+Palette: midnight navy #101C36, warm white #F5F2E9, rich cobalt #5275F6.
+Constraints: actual transparency outside the rounded square. Square image. Exactly one mark on one tile. No wordmark or caption, no gradients across the glyph, no sparkles, no circuits, no globe, no flags, no Apple or OpenAI logos, no decorative framing, no mockup scene, no watermark. Readable professional app icon rather than an illustration.

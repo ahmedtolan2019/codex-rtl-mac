@@ -1,0 +1,25 @@
+name: Layout or launcher bug
+description: Report a problem using fictional sample text.
+body:
+  - type: markdown
+    attributes:
+      value: "Please exclude private conversations, tokens, sidebar history and account names. Report security issues privately using the Security tab."
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Launcher, official app, macOS, and Intel or Apple silicon.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal fictional reproduction
+      description: What did you do, what happened, and what should happen? Include a small Markdown example for layout bugs.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Optional cropped screenshot
+      description: Review it for personal information before attaching it.

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Codex RTL for Mac · synthetic demo</title>
+<link rel="stylesheet" href="../src/rtl-style.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#101216;color:#f0f1f4;font:18px/1.8 system-ui,sans-serif}main{max-width:1120px;margin:36px auto;padding:0 28px}header{border-bottom:1px solid #343a44;padding-bottom:20px;margin-bottom:24px}header p{color:#aeb8c9;font-size:14px;margin:4px 0}h1{font-size:27px}h2{font-size:22px}a{color:#95c8ff}button{background:#23314a;color:#fff;padding:9px 14px;margin:4px;border:1px solid #52698d;border-radius:7px;cursor:pointer}.scroll{overflow:auto}table{border-collapse:collapse;width:100%;min-width:650px;margin:20px 0}th,td{padding:18px 0;padding-inline-end:24px;border-bottom:1px solid #343a44;text-align:start}td:last-child{padding-inline-end:0}.mention[data-layout=inline-flow]{display:inline;white-space:nowrap}.mention .label{white-space:normal;overflow-wrap:break-word;min-width:0}pre{background:#20242c;padding:18px;border-radius:10px;overflow:auto}code{font:15px/1.7 ui-monospace,monospace}p code{background:#262c36;padding:2px 5px;border-radius:4px}#results{font:13px/1.7 ui-monospace,monospace;white-space:pre-wrap}.ProseMirror{border:1px solid #536078;border-radius:8px;padding:14px}.ProseMirror p{margin:0}details{margin:24px 0}summary{cursor:pointer;color:#aeb8c9}.controls{margin:20px 0}
+</style>
+<main><header><h1>Codex RTL for Mac</h1><p>Synthetic browser demo. Fictional data. This is not the official app.</p><p id="mode">Loading renderer…</p><button id="toggle">Show baseline</button></header>
+<article class="_MarkdownRoot_fixture text-codex-description" data-markdown-text-style="assistant-message">
+<h2>تجربة العربية والإنجليزية</h2>
+<p id="arabic">هذه تجربة لقراءة العربية مع English في نفس السطر. نستخدم Nova API بالإصدار v2.3.1، وذاكرة 12 GB، ونسبة نجاح 98.5%.</p>
+<h2>مقارنة خطط تجريبية</h2><p>الأسعار التالية بيانات وهمية للعرض فقط.</p>
+<div class="scroll"><table id="arabic-table"><thead><tr><th>الاختيار</th><th>التكلفة الشهرية</th><th>الملاحظة</th></tr></thead><tbody>
+<tr><td><a id="native-link-0" href="https://example.com/atlas" data-inline-mention-interactive=""><span class="mention" data-layout="inline-flow"><span class="label">Atlas Cloud، ذاكرة 12 GB</span></span></a></td><td>1,250 جنيه</td><td>مناسب لتجربة Demo API</td></tr>
+<tr><td><a id="native-link-1" href="https://example.com/cedar" data-inline-mention-interactive=""><span class="mention" data-layout="inline-flow"><span class="label">CedarHost، ذاكرة 8 GB</span></span></a></td><td>950 جنيه</td><td>نسخة احتياطية كل 24 ساعة</td></tr>
+<tr><td><a id="native-link-2" href="https://example.com/orbit" data-inline-mention-interactive=""><span class="mention" data-layout="inline-flow"><span class="label">Orbit VM 2</span></span></a></td><td>1,800 جنيه</td><td>يدعم Node.js v24</td></tr>
+</tbody></table></div>
+<h2>أسماء تقنية داخل العربية</h2>
+<p id="mixed">Codex يدعم كتابة النص العربي مع أسماء زي Orbit VM 2 وذاكرة 12 GB، والمسار /demo/project/src/app.ts والرابط https://example.com/docs?q=rtl والإيميل demo@example.com.</p>
+<p>افتح الملف <code>/demo/project/src/app.ts</code>، ثم شغّل <code>npm test</code>.</p>
+<pre id="code"><code>const greeting = "مرحبًا بالعالم";
+const memoryGB = 12;
+console.log(greeting, `${memoryGB} GB`);</code></pre>
+<p id="english">This English paragraph should stay left-to-right, even with the Arabic word مرحبًا inside it.</p>
+<details open><summary>Additional regression cases</summary>
+<div class="scroll"><table id="english-table"><thead><tr><th>Product</th><th>Memory</th><th>Note</th></tr></thead><tbody><tr><td>Demo</td><td>12 GB</td><td>مرحبا</td></tr></tbody></table></div>
+<div class="scroll"><table id="centered-table"><thead><tr><th align="center">الاسم</th><th>الملاحظة</th></tr></thead><tbody><tr><td>Orbit VM 2</td><td>نص عربي</td></tr></tbody></table></div>
+<p id="stream">كلام عربي للتجربة</p><p id="unit-stream">ذاكرة 12</p>
+<div class="ProseMirror" role="textbox" contenteditable="true" aria-label="Mixed language composer" dir="auto"><p>اكتب بالعربي مع English و 12 GB</p><p>English paragraph with مرحبا inside.</p></div>
+</details></article>
+<div class="controls"><button id="dynamic">Simulate streaming</button><button id="replace-links">Rebuild link labels</button><button id="check">Check rendering</button></div><pre id="results">Waiting for rendering…</pre>
+</main>
+<script>
+const original=new Map([...document.querySelectorAll('article p,article table,article pre')].map(el=>[el,el.textContent]));
+const baseline=new URLSearchParams(location.search).get('mode')==='baseline';
+document.getElementById('mode').textContent=baseline?'Baseline: no RTL renderer applied.':'Corrected: local RTL renderer applied.';
+document.getElementById('toggle').textContent=baseline?'Show correction':'Show baseline';
+document.getElementById('toggle').onclick=()=>{location.search=baseline?'':'?mode=baseline';};
+function checks(){
+ const $=id=>document.getElementById(id),style=id=>getComputedStyle($(id)),dir=id=>style(id).direction;
+ const check=(name,pass)=>({name,pass:!!pass});
+ const cells=$('arabic-table').rows[0].cells,en=$('english-table').rows[0].cells;
+ const all=[...$('arabic-table').querySelectorAll('th,td')];
+ const model=$('arabic-table').rows[3].cells[0],link=model.querySelector('a');
+ const price=$('arabic-table').rows[3].cells[1],range=document.createRange();range.selectNodeContents(price);
+ const gap=link.getBoundingClientRect().left-range.getBoundingClientRect().right;
+ const phrases=[...$('mixed').querySelectorAll('bdi')].map(el=>el.textContent);
+ const tests=[
+ check('Arabic table columns start at the right',cells[0].getBoundingClientRect().left>cells[2].getBoundingClientRect().left),
+ check('Column alignment remains consistent',all.every(el=>getComputedStyle(el).textAlign==='right')),
+ check('English model reads LTR',getComputedStyle(model).direction==='ltr'),
+ check('English model aligns with its column',Math.abs(link.getBoundingClientRect().right-(model.getBoundingClientRect().right-16))<2),
+ check('Both sides of each cell have 16px padding',all.every(el=>parseFloat(getComputedStyle(el).paddingLeft)===16&&parseFloat(getComputedStyle(el).paddingRight)===16)),
+ check('Adjacent cell contents have a 32px gutter',gap>=31.5),
+ check('Explicit centered column stays centered',[...$('centered-table').rows].every(row=>getComputedStyle(row.cells[0]).textAlign==='center')),
+ check('English table keeps LTR column order',en[0].getBoundingClientRect().left<en[2].getBoundingClientRect().left),
+ check('English table alignment stays left',[...$('english-table').querySelectorAll('th,td')].every(el=>getComputedStyle(el).textAlign==='left')),
+ check('Codex class names do not disable Arabic detection',dir('arabic')==='rtl'),
+ check('Paragraphs retain normal wrapping',style('arabic').whiteSpace!=='pre'&&style('mixed').whiteSpace!=='pre'),
+ check('Layout container is not classified as code',!document.querySelector('article').hasAttribute('data-codex-code-ltr')),
+ check('Nested native-style link labels inherit cell direction',[...document.querySelectorAll('#native-link-0 .label,#native-link-1 .label')].every(el=>getComputedStyle(el).direction==='rtl')),
+ check('12 GB remains a complete LTR phrase',[...$('native-link-0').querySelectorAll('bdi')].some(el=>el.textContent==='12 GB'&&getComputedStyle(el).direction==='ltr')),
+ check('8 GB remains a complete LTR phrase',[...$('native-link-1').querySelectorAll('bdi')].some(el=>el.textContent==='8 GB')),
+ check('Brand then Arabic then unit follows RTL reading order',['native-link-0','native-link-1'].every(id=>{const runs=$(id).querySelectorAll('bdi');if(runs.length!==2)return false;const brand=runs[0].getBoundingClientRect(),unit=runs[1].getBoundingClientRect();return brand.bottom<=unit.top||brand.left>unit.right;})),
+ check('Link destinations and nested wrappers survive',$('native-link-0').getAttribute('href')==='https://example.com/atlas'&&!!$('native-link-0').querySelector(':scope > .mention > .label')),
+ check('Comma-separated price is one number',[...$('arabic-table').querySelectorAll('bdi')].some(el=>el.textContent==='1,250')),
+ check('Model name stays together',phrases.includes('Orbit VM 2')),
+ check('Full path stays together',phrases.includes('/demo/project/src/app.ts')),
+ check('URL query stays together',phrases.includes('https://example.com/docs?q=rtl')),
+ check('Email stays together',phrases.includes('demo@example.com')),
+ check('Arabic sentence with English opening stays RTL',dir('mixed')==='rtl'&&style('mixed').unicodeBidi==='isolate'),
+ check('English paragraph remains LTR',dir('english')==='ltr'),
+ check('Programming code remains LTR',dir('code')==='ltr'),
+ check('Original logical text is preserved',[...original].every(([el,text])=>document.body.dataset.dynamic&&['stream','unit-stream','arabic-table'].includes(el.id)||el.textContent===text)),
+ check('Composer paragraphs choose direction separately',[...document.querySelectorAll('.ProseMirror p')].map(el=>getComputedStyle(el).direction).join(',')==='rtl,ltr')
+ ];
+ if(document.body.dataset.dynamic)tests.push(check('Streaming can change a paragraph to English',dir('stream')==='ltr'),check('Appending a unit forms one phrase',[...$('unit-stream').querySelectorAll('bdi')].some(el=>el.textContent==='12 GB')),check('New table rows receive cell directions',$('arabic-table').rows[4].cells[0].dir==='rtl'));
+ $('results').textContent=tests.map(t=>(t.pass?'PASS':'FAIL')+'  '+t.name).join('\n');
+ $('results').dataset.passed=String(tests.filter(t=>t.pass).length);$('results').dataset.total=String(tests.length);
+}
+const afterPaint=()=>requestAnimationFrame(()=>requestAnimationFrame(checks));
+document.getElementById('check').onclick=checks;
+document.getElementById('replace-links').onclick=()=>{for(const link of document.querySelectorAll('[id^=native-link-]')){const label=link.querySelector('.label'),next=document.createElement('span');next.className='label';next.textContent=label.textContent;label.replaceWith(next);}afterPaint();};
+document.getElementById('dynamic').onclick=()=>{if(document.body.dataset.dynamic)return;document.body.dataset.dynamic='true';document.getElementById('stream').textContent='Now entirely English.';document.getElementById('unit-stream').append(' GB');const row=document.getElementById('arabic-table').tBodies[0].insertRow();['خادم تجريبي Test 4','12 GB','إضافة أثناء البث'].forEach(text=>row.insertCell().textContent=text);afterPaint();};
+function loadScript(src){return new Promise((done,fail)=>{const script=document.createElement('script');script.src=src;script.onload=done;script.onerror=fail;document.head.append(script);});}
+(async()=>{if(!baseline){await loadScript('../src/injected.js');await loadScript('../desktop/macos-composer.js');}document.body.dataset.ready='true';afterPaint();})();
+</script></html>
