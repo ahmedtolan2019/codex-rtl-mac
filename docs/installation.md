@@ -6,8 +6,8 @@ Open [Releases](https://github.com/ahmedtolan2019/codex-rtl-mac/releases/latest)
 
 | Download | App inside | Best for |
 | --- | --- | --- |
-| `Codex-RTL-for-Mac-v0.3.0.zip` | Codex RTL for Mac.app | Standard. Includes Node.js; no setup needed |
-| `Codex-RTL-for-Mac-Lite-v0.3.0.zip` | Codex RTL for Mac Lite.app | Smaller download for an existing Node.js 22+ installation |
+| `Codex-RTL-for-Mac-v0.3.1.zip` | Codex RTL for Mac.app | Standard. Includes Node.js; no setup needed |
+| `Codex-RTL-for-Mac-Lite-v0.3.1.zip` | Codex RTL for Mac Lite.app | Smaller download for an existing Node.js 22+ installation |
 
 GitHub's automatically generated "Source code" ZIP contains source, not a ready-to-open app. Both editions contain the same renderer, launcher logic and icon. Use one edition at a time.
 
@@ -32,7 +32,7 @@ If you do not want to manage Node, use Standard. You are responsible for updatin
 Each release includes `SHA256SUMS.txt`. For an optional checksum check, place the ZIP and checksum file in the same folder and run:
 
 ```sh
-shasum -a 256 Codex-RTL-for-Mac-v0.3.0.zip
+shasum -a 256 Codex-RTL-for-Mac-v0.3.1.zip
 ```
 
 Compare the displayed hash with the matching filename in `SHA256SUMS.txt`. Use the Lite filename if that is your download. A matching checksum verifies that your file matches the release asset. It does not establish the identity or trustworthiness of the publisher if the release account itself were compromised.

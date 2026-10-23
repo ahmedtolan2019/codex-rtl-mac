@@ -1,12 +1,17 @@
 {
   "name": "codex-rtl-mac",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "type": "module",
   "description": "A local, session-only Arabic-English RTL launcher for Codex on macOS.",
   "license": "MIT",
-  "repository": {"type":"git","url":"https://github.com/ahmedtolan2019/codex-rtl-mac.git"},
-  "engines": {"node": ">=22"},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmedtolan2019/codex-rtl-mac.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "test": "node --test desktop/*.test.mjs scripts/*.test.mjs",
     "check": "node --check src/injected.js && node --check desktop/macos-composer.js && node --check desktop/macos.mjs && node --check scripts/build-macos.mjs && node --check scripts/verify-release.mjs && node --check scripts/release-metadata.mjs",
@@ -16,6 +21,10 @@
     "start": "node desktop/macos.mjs",
     "doctor": "node desktop/macos.mjs --check"
   },
-  "dependencies": {"ws":"8.21.0"},
-  "devDependencies": {"@playwright/test":"1.64.1"}
+  "dependencies": {
+    "ws": "8.21.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
 }

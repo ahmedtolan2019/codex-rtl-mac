@@ -6,15 +6,15 @@ The tag must match `package.json`, both lockfile version fields and a file named
 
 ## Publish the next version
 
-Start from an up-to-date, clean `main` checkout. Choose the next version based on the change. For example, to prepare `0.3.1`:
+Start from an up-to-date, clean `main` checkout. Choose the next version based on the change. For example, to prepare `0.3.2`:
 
 ```sh
 git switch main
 git pull --ff-only
-npm version 0.3.1 --no-git-tag-version --ignore-scripts
+npm version 0.3.2 --no-git-tag-version --ignore-scripts
 ```
 
-Write `docs/releases/v0.3.1.md` with the behavior changes, downloads and actual verification scope. Update version-specific installation examples where needed. Then:
+Write `docs/releases/v0.3.2.md` with the behavior changes, downloads and actual verification scope. Update version-specific installation examples where needed. Then:
 
 ```sh
 npm ci --ignore-scripts
@@ -22,17 +22,17 @@ npm run check
 npm test
 npx playwright install chromium
 npm run test:browser
-node scripts/release-metadata.mjs v0.3.1
+node scripts/release-metadata.mjs v0.3.2
 git add package.json package-lock.json docs
-git commit -m 'Prepare v0.3.1'
+git commit -m 'Prepare v0.3.2'
 git push origin main
 ```
 
 Wait for that commit's Test workflow to pass. Create an annotated tag on the prepared commit and push it explicitly:
 
 ```sh
-git tag -a v0.3.1 -m 'Codex RTL for Mac v0.3.1'
-git push origin v0.3.1
+git tag -a v0.3.2 -m 'Codex RTL for Mac v0.3.2'
+git push origin v0.3.2
 gh run list --workflow release.yml
 ```
 
@@ -43,7 +43,7 @@ The workflow uploads the Standard ZIP, Lite ZIP and SHA-256 checksum file to a d
 If a runner or network request fails, rerun the failed jobs in GitHub Actions. You can also dispatch the workflow against the existing tag:
 
 ```sh
-gh workflow run release.yml --ref v0.3.1
+gh workflow run release.yml --ref v0.3.2
 ```
 
 A draft belonging to the same source commit can be completed. An already published release is left unchanged. A release pointing at a different source commit is rejected. Never move a published tag or replace its assets. Fix source mistakes in a new patch version and tag.
