@@ -67,8 +67,11 @@ for (const lite of [false,true]) {
     assert.equal(run(node,['-p','process.arch']),process.arch);
     // Importing the module checks its packaged dependency graph. main() is not invoked.
     // No official app is opened, discovered, controlled or contacted here.
+    // Keep argv[1] different from the imported module so its CLI guard cannot
+    // invoke main(), even when temporary paths contain no symlink components.
     run(node,['--input-type=module','-e',
-      'import {pathToFileURL} from "node:url"; const m=await import(pathToFileURL(process.argv[1]).href); if(typeof m.injection!=="string" || !m.injection.includes("__CODEX_RTL_REVISION__")) process.exit(1);',
+      'import {pathToFileURL} from "node:url"; const m=await import(pathToFileURL(process.argv[2]).href); if(typeof m.injection!=="string" || !m.injection.includes("__CODEX_RTL_REVISION__")) process.exit(1);',
+      'codex-rtl-package-verification',
       join(toolkit,'desktop/macos.mjs')]);
     console.log(`Verified ${name} on ${process.arch}: checksum, extracted signature, version, source, icon and runtime.`);
   } finally {
